@@ -1,0 +1,33 @@
+﻿@using WebSklad.Models;
+@{
+    ViewData["Title"] = "MaterialMovingByDate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int n = 1;
+}
+
+<h2>Отчет по движению материалов за @ViewBag.dates по договору @ViewBag.contract.Name</h2>
+<table class="table table-sm table-bordered table-hover">
+<thead>
+    <tr style="background:#EEF3F6">
+        <th>#</th>
+        <th>Наименование</th>
+        <th>Ед. изм.</th>
+        <th>Получено</th>
+        <th>Выдано</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (MaterialMoving item in ViewBag.materials)
+    {
+    <tr>
+        <td>@n</td>
+        <td><a href="~/Delivery/MaterialMoving/@item.Id">@item.Name</a></td>
+        <td>@item.Unit</td>
+        <td>@item.Income</td>
+        <td>@(item.Outcome*(-1))</td>
+    </tr>
+        n++;
+    }
+</tbody>
+</table>
+

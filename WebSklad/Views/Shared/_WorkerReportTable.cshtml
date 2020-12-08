@@ -1,0 +1,112 @@
+﻿@using DbManager;
+@model IEnumerable<DeviceDelivery>
+@using WebSklad.Models;
+<link href="~/lib/css/print.css" rel="stylesheet" />
+@if (Model != null)
+{
+<div id="InnerTable">
+   @if (@ViewBag.reportType == "mounter")
+    {
+         <h4 class="border-bottom border-gray pb-2 mb-0">Статистика!</h4>
+         <div class="card-deck mb-3 text-center">
+             <div class="card mb-4 shadow-sm">
+                 <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">Получено</h4>
+                 </div>
+                 <div class="card-body">
+                     <h1 class="card-title pricing-card-title">@ViewBag.totalCount</h1>
+                 </div>
+             </div>
+
+             <div class="card mb-4 shadow-sm">
+                 <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">В работе</h4>
+                 </div>
+                 <div class="card-body">
+                     <h1 class="card-title pricing-card-title">@ViewBag.inWork</h1>
+                 </div>
+             </div>
+
+             <div class="card mb-4 shadow-sm">
+                 <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">Установлено</h4>
+                 </div>
+                 <div class="card-body">
+                     <h1 class="card-title pricing-card-title">@ViewBag.mounted</h1>
+                 </div>
+             </div>
+
+
+
+         </div>
+    }
+    else
+    {
+         <h4 class="border-bottom border-gray pb-2 mb-0">Статистика</h4>
+         <div class="card-deck mb-3 text-center">
+             <div class="card mb-4 shadow-sm">
+                 <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">Выдано</h4>
+                 </div>
+                 <div class="card-body">
+                     <h1 class="card-title pricing-card-title">@ViewBag.totalCount</h1>
+                 </div>
+             </div>
+             <div class="card mb-4 shadow-sm">
+                 <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">Возвращено</h4>
+                 </div>
+                 <div class="card-body">
+                     <h1 class="card-title pricing-card-title">@ViewBag.returned<small class="text-muted"> / @ViewBag.totalCount</small></h1>
+                 </div>
+             </div>
+             <div class="card mb-4 shadow-sm">
+                 <div class="card-header">
+                     <h4 class="my-0 font-weight-normal">В работе</h4>
+                 </div>
+                 <div class="card-body">
+                     <h1 class="card-title pricing-card-title">@ViewBag.inWork</h1>
+                 </div>
+             </div>
+         </div>
+    }
+    
+
+    <h6 style="color:#ff0000">@ViewData["error"]</h6>
+    @if (ViewBag.inWork > 0)
+    {
+        <h6>Оборудование в работе</h6>
+        <table class="table table-sm table-bordered table-hover">
+            <thead>
+                <tr style="background:#EEF3F6">
+                    <th>#</th>
+                    <th>Наименование</th>
+                    <th>Заводской номер</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    int n = 1;
+
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@n</td>
+                            <td>@item.DeviceType.Name</td>
+                            <td>@item.SerialNumber</td>
+
+                        </tr>
+                        n++;
+                    }
+
+                }
+            </tbody>
+        </table>
+    }
+
+
+
+</div>
+}

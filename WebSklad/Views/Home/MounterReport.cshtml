@@ -1,0 +1,26 @@
+﻿@using WebSklad.Models;
+@using DbManager;
+@{
+    ViewData["Title"] = "DeviceMoving";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Отчет по работнику (Контракт: @ViewBag.contract.Name)</h4>
+<div>
+    <form action="/Home/MakeMounterReport" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#Table" id="form0" method="post">
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="workerId">Работник</label>
+                @Html.DropDownList("workerId", ViewBag.workers as SelectList, new { @class = "form-control", @autocomplete = "on", @required = "true" })
+            </div>
+        </div>
+        <div class="text-right">
+            <input type="hidden" name="ContractId" value="@(((Contract)ViewBag.contract).Id)" />
+            <button type="submit" class="btn btn-primary">Сформировать</button>
+        </div>
+    </form>
+</div>
+<h6>&#8195</h6>
+<div id="Table">
+    @Html.Partial("_WorkerReportTable")
+</div>

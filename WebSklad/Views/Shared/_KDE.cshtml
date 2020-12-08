@@ -1,0 +1,31 @@
+﻿@model DbManager.KDE
+@if (Model != null)
+{
+<div id="KDE_@Model.Id">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex">
+                <div class="p-2">
+                    @Model.KDEType.Name
+                </div>
+                <div class="ml-auto p-2">
+                    <button class="btn btn-outline-success" data-toggle="modal" data-target="#addPU" onmouseover="KDEId(@Model.Id)"> Добавить ПУ</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @foreach (DbManager.Device device in Model.Devices)
+            {
+            <div class="d-flex">
+                <div class="p-2">
+                   @device.SerialNumber
+                </div>
+                <div class="ml-auto p-2">
+                    <button class="btn btn-outline-danger" onclick="DeletePU('@device.SerialNumber', @Model.Id)">-</button>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+}

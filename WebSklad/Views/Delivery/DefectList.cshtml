@@ -1,0 +1,25 @@
+﻿@model IEnumerable<WebSklad.Models.DeliveryActModel>
+@using WebSklad.Models;
+@using DbManager;
+@{
+    ViewData["Title"] = "Список брака";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/css/print.css" rel="stylesheet" />
+
+<h2>Список бракованного оборудованияпо контракту @(((Contract)ViewBag.contract).Name)</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="text-right">
+            <span class="print-icon" onclick="window.print();">
+                <i class="fas fa-print"></i>
+            </span>
+        </div>
+    </div>
+</div>
+
+<h6>&#8195</h6>
+<div id="Table">
+    @Html.Partial("_DefectTable", Model)
+</div>

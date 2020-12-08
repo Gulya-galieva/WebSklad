@@ -1,0 +1,48 @@
+﻿@using DbManager;
+@model IEnumerable<MaterialType>
+
+<div id="materialTypesInnerTable">
+
+
+    <h6 style="color:#ff0000">@ViewBag.error</h6>
+
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr style="background:#EEF3F6">
+                <th>#</th>
+                <th>Наименование</th>
+                <th>Еденица измерения</th>
+                <th>Стоимость за еденицу, руб.</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int n = 0;
+                foreach (var item in Model)
+                {
+                    n++;
+
+                    <tr>
+                        <td>@n</td>
+                        <td><a href="/Material/MaterialTypeEdit/@item.Id">@item.Name</a></td>
+                        <td>@item.Unit.Name</td>
+                        <td>@item.Price</td>
+
+                        <td>
+                            <form action="/Material/DeleteMaterialType" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#materialTypesInnerTable" id="form0" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <div class="text-center">
+                                    <input id="Submit1" type="submit" value="Удалить" class="btn btn-danger" />
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+
+    </table>
+</div>

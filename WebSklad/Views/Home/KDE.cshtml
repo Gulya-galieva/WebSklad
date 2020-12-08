@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewData["Title"] = "KDE";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>КДЕ</h2>
+<div class="row">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#addKDE">Добавить КДЕ</button>
+</div> 
+<div style="height:10px"></div>
+<div id="KDE">
+    @{ DbManager.KDE KDE = null;
+
+        if (ViewBag.KDE != null)
+        {
+            KDE = ViewBag.KDE;
+        }
+    }
+    @Html.Partial("_KDE", KDE)
+</div>
+<div style="height:10px"></div>
+<div class="modal fade" id="addKDE" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Добавление КДЕ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div>
+                <form action="~/Home/AddKDE" method="post" onsubmit="$('#addKDE').modal.('toggle')">
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <label for="KDEType">Тип КДЕ</label>
+                            <select class="form-control" id="KDEType" name="KDEType" required>
+
+                                <option value="КДЕ-3-1">КДЕ-3-1</option>
+                                <option value="КДЕ-3-2">КДЕ-3-2</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Добавить" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addPU" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Добавление ПУ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addPUForm">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <label for="serial">Заводской номер ПУ</label>
+                        <input type="text" id="serial" name="serial" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="kdeId" name="kdeId" />
+                    <input type="submit" class="btn btn-primary" id="kdeAddBtn"  value="Добавить" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function KDEId(id) {
+        $('#kdeId').val(id);
+    }
+
+     $('#addPUForm').submit(function (e) {
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        var body = "serial=" + encodeURIComponent($('#serial').val()) + "&kdeId=" + encodeURIComponent($('#kdeId').val());
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                $('#addPU').modal('toggle');
+                $('#KDE_' + $('#kdeId').val()).replaceWith(xhr.response);
+                $('#serial').val('');
+            }
+
+        }
+        xhr.open("POST", '/Home/AddPUToKDE', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+
+    });
+
+    function DeletePU(serial, kdeId) {
+        var xhr = new XMLHttpRequest();
+        var body = "serial=" + encodeURIComponent(serial) + "&kdeId=" + encodeURIComponent(kdeId);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                
+                $('#KDE_' + $('#kdeId').val()).replaceWith(xhr.response);
+            }
+
+        }
+        xhr.open("POST", '/Home/DeletePUFromKDE', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+    }
+</script>

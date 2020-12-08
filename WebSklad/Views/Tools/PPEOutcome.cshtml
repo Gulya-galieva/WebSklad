@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "PPEIncome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h2>Выдача инструментов и СИЗ со склада</h2>
+
+
+    <span class="mnemo-icon">
+        <i class="fas fa-store-alt"></i>
+        <i class="fas fa-arrow-right"></i>
+    </span>
+</div>
+
+<form action="" method="post">
+    @if (((SelectList)ViewBag.listItems).Count() > 0)
+    {
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+
+                <label for="Select1">Незавершенные операции выдачи</label>
+                @Html.DropDownList("deliveryActId", ViewBag.listItems as SelectList, new { @class = "form-control" })
+            </div>
+
+        </div>
+    }
+    <input type="hidden" name="dType" value="выдача инструмента и сиз" />
+
+    <div class="row justify-content-end">
+        @if (((SelectList)ViewBag.listItems).Count() > 0)
+        {
+            <div class="col-sm-2">
+                <div class="text-right">
+                    <input formaction="~/Delivery/OpenDeliveryAct" id="btn1" type="submit" value="Открыть" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+        <div class="col-md-2">
+            <div class="text-right">
+                <input formaction="~/Delivery/CreateDeliveryAct" id="btn2" type="submit" value="Новый акт выдачи" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+
+</form>

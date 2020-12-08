@@ -1,0 +1,18 @@
+﻿@using WebSklad.Models
+@using DbManager;
+@{
+    ViewData["Title"] = "ContractMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@(((Contract)ViewBag.contract).Name)</h2>
+<h6>Информация о договоре</h6>
+<p></p>
+<a href="~/Delivery/Sets/@ViewBag.contract.Id" class="btn btn-secondary">Комплекты</a>
+<a href="~/Home/KDE" class="btn btn-secondary">КДЕ (3-1, 3-2)</a>
+<a href="~/Home/MounterReport/@ViewBag.contract.Id" class="btn btn-secondary">Отчет по монтажникам</a>
+<a href="~/Delivery/ReturnToStore/@ViewBag.contract.Id" class="btn btn-secondary">Возврат на склад</a>
+<a href="~/Delivery/ReturnToMnfc/@ViewBag.contract.Id" class="btn btn-secondary">Возврат производителю</a>
+<a href="~/Home/ContractDeviceMoving/@ViewBag.contract.Id" class="btn btn-secondary">Движение оборудования</a>
+
+

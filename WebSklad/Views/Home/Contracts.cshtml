@@ -1,0 +1,47 @@
+﻿@using DbManager;
+@model IEnumerable<Contract>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Контракты";
+}
+<!doctype html>
+<html>
+<head>
+    <title>Контракты и договоры</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    <h3>Список контрактов</h3>
+    <form action="/Home/AddContract" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#contractTable" id="form0" method="post">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <label for="name">Наименование контракта</label>
+                <input id="name" type="text" name="Name" class="form-control" autocomplete="off" required />
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="des">Описание</label>
+                <input id="des" type="text" name="Description" class="form-control" autocomplete="off" required />
+            </div>
+
+        </div>
+
+        <div class="text-right">
+            <input id="post" type="submit" value="Добавить" class="btn btn-primary" />
+        </div>
+
+
+
+    </form>
+    <h6>&#8195</h6>
+    <div id="contractTable">
+        @Html.Partial("_ContractsTable")
+    </div>
+</body>
+</html>

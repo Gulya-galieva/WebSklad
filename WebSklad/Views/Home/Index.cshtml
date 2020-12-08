@@ -1,0 +1,100 @@
+﻿@using WebSklad.Models
+@using DbManager;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Главная страница";
+    bool oneMoreCard = false;
+}
+<div class="text-center">
+    <h2>
+        Контракты
+    </h2>
+</div>
+@{
+    int i = 0;
+    int count = ((List<Contract>)ViewBag.contracts).Count;
+}
+@if (count == 0) { oneMoreCard = true; }
+@while (i < count)
+{
+    <div class="card-deck mb-3 text-center">
+        @for (int j = 0; j < 3; j++)
+        {
+
+            var item = ((List<Contract>)ViewBag.contracts)[i];
+
+            <div class="card mb-4  box-shadow shadow">
+                <div class="card-header">
+                    <a href="~/Home/ContractMenu/@item.Id">
+                        <h4 class="my-0 font-weight-normal">@item.Name</h4>
+                    </a>
+                </div>
+                <div class="card-body">
+
+                    <h5>@item.Description</h5>
+                    <div style="height:100px"></div>
+                    <div class="btn-group flex-shrink-1 bd-highlight" role="group" aria-label="Basic example">
+
+                        <a href="~/Delivery/Income/@item.Id" class="btn btn-outline-primary" role="button" aria-pressed="true">Прием</a>
+                        <a href="~/Delivery/Remainings/@item.Id" class="btn btn-outline-secondary">Остатки</a>
+                        <a href="~/Delivery/Outcome/@item.Id" class="btn btn-outline-success" role="button" aria-pressed="true">Выдача</a>
+                    </div>
+                </div>
+            </div>
+            i++;
+
+            if (i == count)
+            {
+                if (j == 0)
+                {
+                    <div class="card mb-4  box-shadow shadow">
+                        <div class="card-body">
+                            <a href="~/Home/Contracts">
+                                <span class="plus-icon">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card mb-4 empty-card" />
+                }
+                if (j == 1)
+                {
+                    <div class="card mb-4  box-shadow shadow">
+                        <div class="card-body">
+                            <a href="~/Home/Contracts">
+                                <span class="plus-icon">
+                                    <i class="fas fa-plus-circle"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                }
+                if (j == 2)
+                {
+                    oneMoreCard = true;
+                }
+                break;
+            }
+        }
+    </div>
+}
+@if (oneMoreCard)
+{
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 empty-card">
+        </div>
+        <div class="card mb-4  box-shadow shadow">
+            <div class="card-body">
+                <a href="~/Home/Contracts">
+                    <span class="plus-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div class="card mb-4 empty-card">
+        </div>
+    </div>
+}
+

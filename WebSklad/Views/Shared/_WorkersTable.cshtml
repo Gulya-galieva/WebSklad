@@ -1,0 +1,40 @@
+﻿@model IEnumerable<WebSklad.Models.WorkerModel>
+<div id="InnerTable">
+    <h6 style="color:#ff0000">@ViewBag.error</h6>
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr style="background:#EEF3F6">
+                <th>#</th>
+                <th>ФИО</th>
+                <th>Тип</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int n = 0;
+                foreach (var item in Model)
+                {
+                    string fio = item.Surname + " " + item.Name + " " + item.Middlename;
+                    n++;
+
+                    <tr>
+                        <td>@n</td>
+                        <td><a href="~/Home/WorkerMenu/@item.Id">@fio</a></td>
+                        <td>@item.Type</td>
+                        <td>
+                            <form action="/Home/DeleteWorker" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#InnerTable" id="form0" method="post">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <div class="text-center">
+                                    <input id="Submit1" type="submit" value="Удалить" class="btn btn-danger" />
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+</div>

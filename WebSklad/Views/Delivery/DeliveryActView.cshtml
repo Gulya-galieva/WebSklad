@@ -1,0 +1,126 @@
+﻿@model WebSklad.Models.DeliveryModel
+@addTagHelper *,WebSklad
+@using WebSklad.Models;
+@using DbManager;
+@{
+    ViewData["Title"] = "DeliveryTable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/css/print.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <h2>@ViewBag.str</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 mb-1">
+        <h5>Статус акта: @ViewBag.state</h5>
+        <h5>Работник: @ViewBag.worker</h5>
+    </div>
+    <div class="col-md-3 mb-3">
+        <h6>&#8195</h6>
+        <barcode content="@ViewBag.actId" width="300" height="50"></barcode>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        
+        <div class="text-right">
+
+            <div class="loader" id="Loading" ></div>
+
+            @if (((string)ViewBag.str).StartsWith("Акт выдачи со склада"))
+            {
+                <span class="print-icon" onclick="GenerateExcel('GenerateExcelOutcomeAct');">
+                    <i class="far fa-file-excel"></i>
+                </span>
+            }
+            @if (((string)ViewBag.str).StartsWith("Акт выдачи инструмента"))
+            {
+                <span class="print-icon" onclick="GenerateExcel('GenerateExcelPPEAct');">
+                    <i class="far fa-file-excel"></i>
+                </span>
+            }
+            @if (((string)ViewBag.str).StartsWith("Акт возврата на склад"))
+            {
+                <span class="print-icon" onclick="GenerateExcel('GenerateExcelReturnAct');">
+                    <i class="far fa-file-excel"></i>
+                </span>
+            }
+            <span class="print-icon" onclick="window.print();">
+                <i class="fas fa-print"></i>
+            </span>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div id="Table">
+    @{ if (ViewBag.actType == "брак")
+        {
+            @Html.Partial("_DeliveryTableDefects", Model)
+        }
+        if (ViewBag.actType == "прием инструмента и сиз" || ViewBag.actType == "выдача инструмента и сиз")
+        {
+            @Html.Partial("_DeliveryTablePPE", Model)
+        }
+        else
+        {
+            @Html.Partial("_DeliveryTable", Model)
+        }
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#Loading').hide();
+    });
+
+    function GenerateExcel(Action) {
+        var xhr = new XMLHttpRequest();
+        var body = "id=" + encodeURIComponent(@ViewBag.actId);
+        xhr.responseType = 'blob';
+        $('#Loading').fadeIn();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                LoadDocument(xhr);
+                $('#Loading').fadeOut();
+            }
+            //else alert("Не удалось сгенирировать файл!");
+        }
+
+        xhr.open("POST", '/Delivery/' + Action, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+    }
+
+   
+
+    function LoadDocument(xhr) {
+        if (xhr.status == 200) {
+            // Create a new Blob object using the
+            //response data of the onload object
+            var blob = new Blob([xhr.response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            //Create a link element, hide it, direct
+            //it towards the blob, and then 'click' it programatically
+            let a = document.createElement("a");
+            a.style = "display: none";
+            document.body.appendChild(a);
+            //Create a DOMString representing the blob
+            //and point the link element towards it
+            let url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = 'Act'+ '@ViewBag.actId' + '.xlsx';
+            //programatically click the link to trigger the download
+            a.click();
+            //release the reference to the file by revoking the Object URL
+            window.URL.revokeObjectURL(url);
+        } else {
+
+        }
+    };
+</script>

@@ -1,0 +1,53 @@
+﻿@using WebSklad.Models;
+@using DbManager;
+@{
+    ViewData["Title"] = "ToAssembly";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center">
+    <h2>Возврат оборудования со сборки по договору @(((Contract)ViewBag.contract).Name)</h2>
+    <span class="mnemo-icon">
+        <i class="fas fa-box"></i>
+        <i class="fas fa-arrow-right"></i>
+    </span>
+</div>
+
+<form action="" method="post">
+    @if (((SelectList)ViewBag.listItems).Count() > 0)
+    {
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+
+                <label for="Select1">Незавершенные операции возврата со сборки</label>
+                @Html.DropDownList("deliveryActId", ViewBag.listItems as SelectList, new { @class = "form-control" })
+            </div>
+
+        </div>
+    }
+    <input type="hidden" name="contractId" value="@(((Contract)ViewBag.contract).Id)" />
+    <input type="hidden" name="dType" value="возврат со сборки" /> @*Тип создоваемого акта*@
+
+    <div class="row justify-content-end">
+        @if (((SelectList)ViewBag.listItems).Count() > 0)
+        {
+            <div class="col-sm-2">
+                <div class="text-right">
+                    <input formaction="~/Delivery/OpenDeliveryAct" id="btn1" type="submit" value="Открыть" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+        <div class="col-md-4">
+            <div class="text-right">
+                <input formaction="~/Delivery/CreateDeliveryAct" id="btn2" type="submit" value="Новый акт возврата со сборки" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+
+

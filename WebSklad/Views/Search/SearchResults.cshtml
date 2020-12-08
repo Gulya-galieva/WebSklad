@@ -1,0 +1,65 @@
+﻿@using DbManager;
+@model IEnumerable<DeviceDelivery>
+@{
+    ViewData["Title"] = "Результаты поиска";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/css/print.css" rel="stylesheet" />
+
+<h2>История движение оборудования</h2>
+
+
+<div id="InnerTable">
+
+
+    <h6 style="color:#ff0000">@ViewData["error"]</h6>
+    <h6>Этапы</h6>
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr style="background:#EEF3F6">
+                <th>#</th>
+                <th>Дата</th>
+                <th>Описание</th>
+                <th>Ответственный</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                int n = 1;
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@n</td>
+                        <td>@item.DeliveryAct.Date.ToString()</td>
+                        <td>@item.DeliveryAct.DeliveryType.Description</td>
+                        @if (item.DeliveryAct.Worker != null)
+                        {
+                            <td>@item.DeliveryAct.Worker.Surname @item.DeliveryAct.Worker.Name @item.DeliveryAct.Worker.MIddlename </td>
+
+                        }
+                        else
+                        {
+                            if (item.DeliveryAct.User.Name != null && item.DeliveryAct.User.Name != "")
+                            {
+                                <td>@item.DeliveryAct.User.Name</td>
+                            }
+                            else
+                            {
+                                <td>@item.DeliveryAct.User.Login</td>
+                            }
+
+                        }
+
+
+                    </tr>
+                    n++;
+                }
+            }
+        </tbody>
+
+    </table>
+</div>
+
+

@@ -1,0 +1,109 @@
+﻿@using DbManager;
+@model DeviceType
+@using WebSklad.App_code
+@{
+    ViewData["Title"] = "DeviceTypes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h3>Виды оборудования</h3>
+<form action="/Device/DeviceTypeEdit" id="form0" method="post">
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+            <label for="name">Наименование оборудования</label>
+            <input id="name" type="text" name="Name" class="form-control" autocomplete="off" required value="@Model.Name"/>
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="Select1">Тип оборудования</label>
+            <select id="Select1" class="form-control" name="Type" value="@Model.Type">
+                @SelectHelper.CreateSelect(Html, new List<string>() { "ПУ", "УСПД", "PLC модем", "Контроллер" })
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 mb-3">
+            <label for="desc">Описание</label>
+            <input id="desc" type="text" name="Description" class="form-control" autocomplete="off" value="@Model.Description"/>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+            <label for="Select2">Номинальный ток</label>
+            <select id="Select2" class="form-control" name="Inom"  value="@Model.INom">
+                @SelectHelper.CreateSelect(Html, new List<string>() { "---", "5(10)", "5(60)", "5(100)" })
+            </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="Select3">Номинальное напряжение</label>
+            <select id="Select3" class="form-control" name="Unom" value="@Model.UNom">
+                @SelectHelper.CreateSelect(Html, new List<string>() { "---", "230", "3x230/400" })
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+            <label for="Select4">Класс точности</label>
+            <select id="Select4" class="form-control" name="AccuracyClass" value="@Model.AccuracyClass">
+                @SelectHelper.CreateSelect(Html, new List<string>() { "---", "0,5s/0,5", "1/1", "1/2" })
+            </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="Select5">Тип измеряемой энергии</label>
+            <select id="Select5" class="form-control" name="EnergyType" value="@Model.EnergyType">
+                @SelectHelper.CreateSelect(Html, new List<string>() { "---", "А", "А/Р" })
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <label for="interval">Межпроверочный интервал</label>
+            <input id="interval" type="text" name="TestInterval" class="form-control" autocomplete="off" value="@Model.TestInterval"/>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="code">Код модели</label>
+            <input id="code" type="text" name="ModelCode" class="form-control" autocomplete="off" required value="@Model.ModelCode" />
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="Price">Цена за шт., руб.</label>
+            <input type="text" id="Price" class="form-control" name="Price" required pattern="\d+(,\d{1,10})?" value="@Model.Price"/>
+        </div>
+
+    </div>
+
+    <div class="text-right">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input id="post" type="submit" value="Сохранить" class="btn btn-primary" />
+    </div>
+
+</form>
+<script>
+    $('#Select1').val("@Html.Raw(Model.Type)");
+    $('#Select2').val("@Html.Raw(Model.INom)");
+    $('#Select3').val("@Html.Raw(Model.UNom)");
+    $('#Select4').val("@Html.Raw(Model.AccuracyClass)");
+    $('#Select5').val("@Html.Raw(Model.EnergyType)");
+
+</script>
+

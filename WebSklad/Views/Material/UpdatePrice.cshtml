@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewData["Title"] = "UpdatePrice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Обновление цен материалов</h3>
+<div class="row">
+    <form method="post" enctype="multipart/form-data" action="/Material/UploadPrice">
+        @*<div class="row">
+                <div class="col-md-6">
+                    <input type="file" name="file"/>
+                </div>
+                <div class="col-md-6">
+                    <input type="submit" class="btn btn-primary" value="Загузить"/>
+                </div>
+            </div>*@
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="file" name="file" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Загрузить" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    @if (ViewBag.Info != null)
+    {
+        <h6 style="color:red">@ViewBag.Info.Error</h6>
+        @if (@ViewBag.Info.Error == null)
+        {
+            <table class="table table-sm table-bordered table-hover">
+                <thead>
+                    <tr style="background:#EEF3F6">
+                        <th>Строк</th>
+                        <th>Новых материалов</th>
+                        <th>Обновлений ед. изм</th>
+                        <th>Обновлений стоимости</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@ViewBag.Info.Count</td>
+                        <td>@ViewBag.Info.NewItems</td>
+                        <td>@ViewBag.Info.UpdatedUnits</td>
+                        <td>@ViewBag.Info.UpdatePrice</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h6>Новые материалы</h6>
+            <table class="table table-sm table-bordered table-hover">
+                <thead>
+                    <tr style="background:#EEF3F6">
+                        <th>Наименование</th>
+                        <th>Ед. изм.</th>
+                        <th>Стоимость</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Info.NewMaterials)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Unit</td>
+                            <td>@item.Price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <h6>Обновление ед. изм.</h6>
+            <table class="table table-sm table-bordered table-hover">
+                <thead>
+                    <tr style="background:#EEF3F6">
+                        <th>Наименование</th>
+                        <th>Старая ед. изм.</th>
+                        <th>Новая ед. изм</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Info.UpdateUnits)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.OldUnit</td>
+                            <td>@item.NewUnit</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            <h6>Обновление стоимости</h6>
+            <table class="table table-sm table-bordered table-hover">
+                <thead>
+                    <tr style="background:#EEF3F6">
+                        <th>Наименование</th>
+                        <th>Старая стоимость.</th>
+                        <th>Новая стоимость</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Info.UpdatePrices)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.OldPrice</td>
+                            <td>@item.NewPrice</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="text-right">
+                <form action="~/Material/UpdateMaterials" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#result" id="form0" method="post">
+                    <input type="submit" value="Применить изменения" />
+                </form>
+            </div>
+        }
+    }
+</div>
+<div class="row" id="result">
+
+</div>

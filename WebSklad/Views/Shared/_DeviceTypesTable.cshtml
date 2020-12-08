@@ -1,0 +1,61 @@
+﻿@using DbManager;
+@model IEnumerable<DeviceType>
+
+<div id="DeviceTypesInnerTable">
+
+
+    <h6 style="color:#ff0000">@ViewBag.error</h6>
+
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr style="background:#EEF3F6">
+                <th>#</th>
+                <th>Наименование</th>
+                <th>Тип</th>
+                <th>Описание</th>
+                <th>Код модели</th>
+                <th>I, ном</th>
+                <th>U, ном</th>
+                <th>Класс точности</th>
+                <th>Тип изм. энергии</th>
+                <th>Межпроверочный интервал</th>
+                <th>Стоимость, руб.</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int n = 0;
+                foreach (var item in Model)
+                {
+                    n++;
+
+            <tr>
+                <td>@n</td>
+                <td><a href="/Device/DeviceTypeEdit/@item.Id">@item.Name</a></td>
+                <td>@item.Type</td>
+                <td>@item.Description</td>
+                <td>@item.ModelCode</td>
+                <td>@item.INom</td>
+                <td>@item.UNom</td>
+                <td>@item.AccuracyClass</td>
+                <td>@item.EnergyType</td>
+                <td>@item.TestInterval</td>
+                <td>@item.Price</td>
+                <td>
+                    <form action="/Device/DeleteDeviceType" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#DeviceTypesInnerTable" id="form0" method="post">
+                        <input type="hidden" name="Id" value="@item.Id" />
+                        <div class="text-center">
+                            <input id="Submit1" type="submit" value="Удалить" class="btn btn-danger" />
+                        </div>
+                    </form>
+                </td>
+            </tr>
+
+                }
+            }
+        </tbody>
+
+    </table>
+</div>

@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/css/cardStyle.css" rel="stylesheet" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/ajaxJq/jquery.unobtrusive-ajax.js"></script>
+    @*<script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>*@
+    <script src="~/lib/Font-Awesome/svg-with-js/js/fontawesome-all.js"></script>
+    <script src="~/lib/chart.js/dist/Chart.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="/Home/Index">Склад</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="button-icon">
+                                <i class="fas fa-book"></i>
+                            </span>
+                            Справочники
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                            <a class="dropdown-item" href="~/Material/MaterialTypes">
+                                <span class="button-icon">
+                                    <i class="fas fa-cubes"></i>
+                                </span>
+                                Виды материалов
+                            </a>
+                            <a class="dropdown-item" href="~/Device/DeviceTypes">
+
+                                <span class="button-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </span>
+                                Виды оборудования
+
+                            </a>
+                            <a class="dropdown-item" href="~/Tools/PPETypes">
+                                <span class="button-icon">
+                                    <i class="fas fa-hammer"></i>
+                                </span>
+                                Виды инструмента и СИЗ
+                            </a>
+                            <a class="dropdown-item" href="~/Home/Workers">
+                                <span class="button-icon">
+                                    <i class="far fa-address-card"></i>
+                                </span>
+                                Работники
+                            </a>
+                            <a class="dropdown-item" href="~/Home/Contracts">
+                                <span class="button-icon">
+                                    <i class="fas fa-scroll"></i>
+                                </span>
+                                Контракты
+                            </a>
+                        </div>
+                    </li>
+                    @if (User.IsInRole("administrator") || User.IsInRole("storekeeper"))
+                    {
+                        <li class="nav-item ">
+                            <a class="nav-link" href="~/Tools/PPE">
+                                <span class="button-icon">
+                                    <i class="fa fa-toolbox"></i>
+                                </span>
+                                Инструменты и СИЗ
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("administrator"))
+                    {
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="button-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </span>
+                                Регистрация
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
+                                <a class="dropdown-item" href="/Account/Register">
+                                    <span class="button-icon">
+                                        <i class="fas fa-user-tie"></i>
+                                    </span>
+                                    Регистрация пользователя
+                                </a>
+                                <a class="dropdown-item" href="/Account/RegisterMounter">
+                                    <span class="button-icon">
+                                        <i class="fas fa-user-ninja"></i>
+                                    </span>
+                                    Регистрация монтажника
+                                </a>
+                            </div>
+
+                        </li>
+                    }
+                </ul>
+                <div class="nav navbar-nav navbar-right">
+                    <form action="/Search/SearchResults">
+                        <div class="input-group">
+                            <input class="form-control" name="query" type="search" placeholder="№ ПУ, № акта" aria-label="Search">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit" id="button-addon2">
+                                    <span>
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        string usName = "[" + User.Identity.Name + "]";
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">@usName</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Logout">Выйти</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!--основной контент-->
+    <div class="container">
+        @RenderBody()
+
+
+    </div>
+    <footer class="fixed-bottom" style="background-color:#ffffff">
+        <hr />
+        <p>© 2018-2020 ООО "КУРС"</p>
+    </footer>
+</body>
+</html>

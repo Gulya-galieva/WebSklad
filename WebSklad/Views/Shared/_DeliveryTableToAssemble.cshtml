@@ -1,0 +1,55 @@
+﻿@model WebSklad.Models.DeliveryModel
+<link href="~/lib/css/print.css" rel="stylesheet" />
+<div id="InnerTable">
+
+
+    <h6 style="color:#ff0000">@ViewData["error"]</h6>
+    <h6>Оборудование</h6>
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr style="background:#EEF3F6">
+                <th>#</th>
+                <th>Наименование</th>
+                <th>Заводской номер</th>
+                <th>Комплект</th>
+                @{ if (ViewBag.state != "проведен")
+                    {
+                        <th class="no-print"></th>}
+                }
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                int n = 1;
+
+
+                @foreach (var item in Model.DeviceDeliveries)
+                {
+                    <tr>
+                        <td>@n</td>
+                        <td>@item.DeviceType.Name</td>
+                        <td>@item.SerialNumber</td>
+                        <td>@item.SetId</td>
+                        @if (item.DeliveryAct.DeliveryState.Description == "в работе")
+                        {
+                            <td>
+                                <form action="/Delivery/DeleteDeviceFromDeliveryTable" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#InnerTable" id="form0" method="post">
+                                    <input type="hidden" name="DeliveryId" value="@item.Id" />
+                                    <input type="hidden" name="ActId" value="@item.DeliveryActId" />
+                                    <div class="text-center">
+                                        <input id="Submit1" type="submit" value="Удалить" class="btn btn-danger" />
+                                    </div>
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                    n++;
+                }
+
+            }
+        </tbody>
+
+    </table>
+</div>

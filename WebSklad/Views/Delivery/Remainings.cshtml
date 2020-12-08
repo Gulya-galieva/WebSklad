@@ -1,0 +1,117 @@
+﻿@using DbManager;
+@using WebSklad.Models;
+@{
+    ViewData["Title"] = "Remainings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int n = 1;
+}
+<link href="~/lib/air-datepicker/dist/css/datepicker.css" rel="stylesheet" type="text/css" />
+<script src="~/lib/air-datepicker/dist/js/datepicker.js"></script>
+<h2>Остатки на складе по договору @(((Contract)ViewBag.contract).Name) на @(((DateTime)ViewBag.date).ToShortDateString())</h2>
+<div class="d-flex">
+    <div>
+        <form>
+            <div class="d-flex">
+                <div>
+                    <label for="date">Показать остатки на дату:</label>
+                    <input type='text' id="date" name="date" class='datepicker-here form-control' autocomplete="off" />
+                </div>
+                <div class="mt-auto">
+                    <input type="hidden" name="id" value="@ViewBag.contract.Id" />
+                    <button type="submit" class="btn btn-primary">Показать</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ml-2">
+        <form action="/Delivery/MaterialMovingByDate">
+            <div class="d-flex">
+                <div>
+                    <label for="date">Показать движение материалов за период:</label>
+                    <input type='text' id="date2" name="date" data-range="true" data-multiple-dates-separator=" - " class='datepicker-here form-control' autocomplete="off" />
+                </div>
+                <div class="mt-auto">
+                    <input type="hidden" name="id" value="@ViewBag.contract.Id" />
+                    <button type="submit" class="btn btn-primary">Показать</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<h4>Остатки оборудования</h4>
+<table class="table table-sm table-bordered table-hover">
+    <thead>
+        <tr style="background:#EEF3F6">
+            <th>#</th>
+            <th>Наименование</th>
+            <th>Кол-во</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DeviceRemanings item in ViewBag.devices)
+        {
+
+            <tr>
+                <td>@n</td>
+                <td>@item.Name</td>
+                <td>@item.Count</td>
+            </tr>
+            n++;
+
+
+        }
+    </tbody>
+</table>
+
+@{n = 1; }
+<h4>Остатки материалов</h4>
+<table class="table table-sm table-bordered table-hover">
+    <thead>
+        <tr style="background:#EEF3F6">
+            <th>#</th>
+            <th>Наименование</th>
+            <th>Ед. изм.</th>
+            <th>Кол-во</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (MaterialRemanings item in ViewBag.materials)
+        {
+            <tr>
+                <td>@n</td>
+                <td><a href="~/Delivery/MaterialMoving/@item.Id">@item.Name</a></td>
+                <td>@item.Unit</td>
+                <td>@item.Volume</td>
+            </tr>
+            n++;
+        }
+    </tbody>
+</table>
+
+
+<script>
+    $('#date').datepicker({
+        startDate: new Date(),
+        maxDate: new Date()
+    });
+
+     $('#date2').datepicker({
+        startDate: new Date(),
+        maxDate: new Date()
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+
+        if (day.toString().length === 1)
+            day = "0" + day;
+        if (month.toString().length === 1)
+            month = "0" + month;
+
+        $('#date').val(day + '.' + month + '.' + date.getFullYear());
+    });
+</script>

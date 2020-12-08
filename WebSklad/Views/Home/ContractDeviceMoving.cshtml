@@ -1,0 +1,104 @@
+﻿@using WebSklad.Models;
+@using DbManager;
+@{
+    ViewData["Title"] = "DeviceMoving";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Движение оборудования по договору @(((Contract)ViewBag.contract).Name)</h2>
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <a href="~/Delivery/ToTune/@(((Contract)ViewBag.contract).Id)" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">
+            <span class="button-icon">
+                <i class="fas fa-arrow-right"></i>
+                <i class="fas fa-wrench"></i>
+            </span>
+            Выдать на настройку
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <a href="~/Delivery/ToAssembly/@(((Contract)ViewBag.contract).Id)" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">
+            <span class="button-icon">
+                <i class="fas fa-arrow-right"></i>
+                <i class="fas fa-box"></i>
+            </span>
+            Выдать на сборку
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <a href="~/Delivery/Defect/@ViewBag.contract.Id" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">
+            <span class="button-icon">
+                <i class="fas fa-arrow-right"></i>
+                <i class="far fa-calendar-times"></i>
+            </span>
+            Добавить в брак
+        </a>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <a href="~/Delivery/FromTune/@(((Contract)ViewBag.contract).Id)" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">
+            <span class="button-icon">
+                <i class="fas fa-wrench"></i>
+                <i class="fas fa-arrow-right"></i>
+            </span>
+            Венуть с настройки
+        </a>
+    </div>
+
+
+
+    <div class="col-md-4 mb-3">
+        <a href="~/Delivery/FromAssembly/@(((Contract)ViewBag.contract).Id)" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">
+            <span class="button-icon">
+                <i class="fas fa-box"></i>
+                <i class="fas fa-arrow-right"></i>
+            </span>
+            Венуть со сборки
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <a href="~/Delivery/DefectList/@ViewBag.contract.Id" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">
+            <span class="button-icon">
+
+                <i class="fas fa-list-ol"></i>
+            </span>
+            Список брака
+        </a>
+    </div>
+
+</div>
+
+
+
+
+
+<h4>Отчет по работнику</h4>
+<div>
+    <form action="/Home/MakeWorkerReport" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#Table" id="form0" method="post">
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="workerId">Работник</label>
+                @Html.DropDownList("workerId", ViewBag.workers as SelectList, new { @class = "form-control", @autocomplete = "on", @required = "true" })
+            </div>
+        </div>
+        <div class="text-right">
+            <input type="hidden" name="contractId" value="@(((Contract)ViewBag.contract).Id)" />
+            <button type="submit" class="btn btn-primary">Сформировать</button>
+        </div>
+    </form>
+</div>
+<h6>&#8195</h6>
+<div id="Table">
+    @Html.Partial("_WorkerReportTable")
+</div>
+
+
+

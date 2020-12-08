@@ -1,0 +1,68 @@
+﻿@model WebSklad.Models.RegisterModel
+@{
+    ViewData["Title"] = "Регистрация";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using WebSklad.App_code
+
+<form action="/Account/Register" asp-antiforgery="true" method="post">
+
+    <h1 class="h3 mb-3 font-weight-normal">Регистрация нового пользователя</h1>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+            <label for="inputEmail">Email</label>
+            <input type="text" id="inputEmail" name="Email" class="form-control" placeholder="Email" required="">
+            <span asp-validation-for="Email" />
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label for="inputLogin">Логин</label>
+            <input type="text" id="inputLogin" name="Login" class="form-control" placeholder="Login" required="" autofocus="">
+            <span asp-validation-for="Login" />
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6 mb-3">
+
+            <label for="inputPassword">Пароль</label>
+            <input type="password" id="inputPassword" name="Password" class="form-control" placeholder="Password" required="">
+            <span asp-validation-for="Password" />
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+            <label for="confirmPassword">Подтверждение пароля</label>
+            <input type="password" id="confirmPassword" name="ConfirmPassword" class="form-control" placeholder="Confirm Password" required="">
+            <span asp-validation-for="ConfirmPassword" />
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12 mb-3">
+            <label for="WorkerId">Монтажник</label>
+            @Html.DropDownList("WorkerId", ViewBag.Workers as SelectList, new { @class = "form-control", @autocomplete = "on", @required = "true" })
+        </div>
+    </div>
+
+    
+
+
+    <div class="text-right">
+        <input name="Role" type="hidden" value="mounter" />
+        <input id="post" type="submit" value="Зарегистрировать" class="btn btn-primary" />
+    </div>
+
+</form>
+
+

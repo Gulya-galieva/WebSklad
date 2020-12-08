@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PPE>
+@using DbManager;
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Инструмент и СИЗ</h3>
+
+<table class="table table-sm table-bordered table-hover">
+    <thead>
+        <tr style="background:#EEF3F6">
+            <th>#</th>
+            <th>Наименование</th>
+            <th>Кол-во, шт</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @{
+            int n = 0;
+            foreach (var item in Model)
+            {
+                n++;
+
+                <tr>
+                    <td>@n</td>
+                    <td>@item.Name</td>
+                    <td>@item.Volume</td>
+                </tr>
+
+            }
+        }
+    </tbody>
+
+</table>
+<div class="text-right">
+    <button class="btn btn-outline-primary">Прием</button>
+    <button class="btn btn-outline-success">Выдача</button>
+</div>
+<h4>Отчет по работнику</h4>
+<form action="/Home/MakeMounterReport" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#Table" id="form0" method="post">
+    <label for="WorkerId">Работник</label>
+    @Html.DropDownList("WorkerId", ViewBag.workers as SelectList, new {  @class = "form-control", @autocomplete = "on", @required = "true" })
+    <div class="text-right">
+     <button type="submit" class="btn btn-primary">Сформировать</button>
+    </div>
+</form>
+    <div id="Table">
+        @Html.Partial("_WorkerReportPPE")
+    </div>
+

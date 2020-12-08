@@ -1,0 +1,156 @@
+﻿@using DbManager;
+
+@{
+    ViewData["Title"] = "Результаты поиска";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/css/print.css" rel="stylesheet" />
+
+<h2>История движение оборудования @ViewBag.Device.SerialNumber</h2>
+<div class="row">
+    <div class="col-md-6">
+        <h6>Привязаный комплект</h6>
+        @Html.DropDownList("SetId", ViewBag.setItems as SelectList, new { @class = "form-control", @id = "SetId", @required = "true", @value = @ViewBag.SetId, @onchange = "ChangeSetId()" })
+    </div>
+    @if(((Device)ViewBag.Device).DeviceType.Type == "УСПД" || ((Device)ViewBag.Device).DeviceType.Description.Contains("GSM") || ((Device)ViewBag.Device).DeviceType.ModelCode == "008984")
+    {
+        <div class="col-md-6">
+        <h6>Номер сим</h6>
+        <input type="tel" id="phoneNumber" class="form-control" onchange="ChangePhoneNumber()" value="@ViewBag.PhoneNumber"/>
+        </div>
+    }
+</div>
+@if(ViewBag.KDE != null)
+{
+    <div style="height:10px"></div>
+   DbManager.KDE kde = ViewBag.KDE;
+         <h6>Этот ПУ привязан к <a href ="/Home/OpenKDE/@kde.Id">@kde.KDEType.Name</a></h6>
+   
+}
+
+<h6>По актам</h6>
+<table class="table table-sm table-bordered table-hover">
+    <thead>
+        <tr style="background:#EEF3F6">
+            <th>#</th>
+            <th>Дата</th>
+            <th>Описание</th>
+            <th>Ответственный</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{
+            int n = 1;
+            @foreach (var item in ViewBag.Deliveries)
+            {
+                <tr>
+                    <td>@n</td>
+                    <td>@item.DeliveryAct.Date.ToString()</td>
+                    <td>@item.DeliveryAct.DeliveryType.Description</td>
+                    @if (item.DeliveryAct.Worker != null)
+                    {
+                        <td>@item.DeliveryAct.Worker.Surname @item.DeliveryAct.Worker.Name @item.DeliveryAct.Worker.MIddlename </td>
+
+                    }
+                    else
+                    {
+                        if (item.DeliveryAct.User.Name != null && item.DeliveryAct.User.Name != "")
+                        {
+                            <td>@item.DeliveryAct.User.Name</td>
+                        }
+                        else
+                        {
+                            <td>@item.DeliveryAct.User.Login</td>
+                        }
+
+                    }
+
+
+                </tr>
+                n++;
+            }
+        }
+    </tbody>
+
+</table>
+
+<h6>По Статусам</h6>
+<table class="table table-sm table-bordered table-hover">
+    <thead>
+        <tr style="background:#EEF3F6">
+            <th>#</th>
+            <th>Дата</th>
+            <th>Описание</th>
+            <th>Ответственный</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            n = 1;
+
+            @foreach (DbManager.DeviceState item in ViewBag.States)
+            {
+                <tr>
+                    <td>@n</td>
+                    <td>@item.Date</td>
+                    <td>@item.DeviceStateType.Description</td>
+                    @if (!(item.User.Name != "" || item.User.Name == null))
+                    {
+                        <td>@item.User.Name</td>
+                    }
+                    else
+                    {
+                        <td>@item.User.Login</td>
+                    }
+                </tr>
+                n++;
+            }
+        }
+    </tbody>
+
+</table>
+
+<script>
+    function ChangeSetId() {
+        var xhr = new XMLHttpRequest();
+        var body = "setId=" + encodeURIComponent($('#SetId').val()) + "&deviceId=" + encodeURIComponent(@ViewBag.Device.Id);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+
+        xhr.open("POST", '/Device/ChangeSetId', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+    }
+
+    function ChangePhoneNumber() {
+        var number = $('#phoneNumber').val();
+        var reg = new RegExp('[0-9]{11}');
+        if (!reg.test(number)) {
+            alert("Не верный формат номера сим");
+            $('#phoneNumber').val("");
+        }
+        else {
+
+             var xhr = new XMLHttpRequest();
+            var body = "phoneNumber=" + encodeURIComponent($('#phoneNumber').val()) + "&deviceId=" + encodeURIComponent(@ViewBag.Device.Id);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+            }
+        }
+
+            xhr.open("POST", '/Device/ChangePhoneNumber', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send(body);
+          
+        }
+    }
+ 
+   
+</script>

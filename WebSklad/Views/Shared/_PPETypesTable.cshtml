@@ -1,0 +1,44 @@
+﻿@using DbManager;
+@model IEnumerable<PPE>
+
+<div id="InnerTable">
+
+
+    <h6 style="color:#ff0000">@ViewBag.error</h6>
+
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr style="background:#EEF3F6">
+                <th>#</th>
+                <th>Наименование</th>
+                 <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int n = 0;
+                foreach (var item in Model)
+                {
+                    n++;
+
+                    <tr>
+                        <td>@n</td>
+                        <td>@item.Name</td>
+                        
+                        <td>
+                            <form action="/Tools/DeletePPEType" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#InnerTable" id="form0" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <div class="text-center">
+                                    <input id="Submit1" type="submit" value="Удалить" class="btn btn-danger" />
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+
+    </table>
+</div>

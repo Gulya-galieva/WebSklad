@@ -1,0 +1,55 @@
+﻿
+@using WebSklad.App_code;
+@using WebSklad.Models;
+@using DbManager;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Акт выбраковки";
+}
+
+<div class="text-center">
+    <h2>Акт выбраковкиа по договору @(((Contract)ViewBag.contract).Name)</h2>
+
+    <span class="mnemo-icon">
+        <i class="far fa-calendar-times"></i>
+    </span>
+</div>
+<form action="" method="post">
+    @if (((SelectList)ViewBag.listItems).Count() > 0)
+    {
+        <div class="row">
+
+            <div class="col-md-12 mb-3">
+
+                <label for="Select1">Незавершенные операции выбраковки</label>
+                @Html.DropDownList("deliveryActId", ViewBag.listItems as SelectList, new { @class = "form-control" })
+            </div>
+
+        </div>
+    }
+    <input type="hidden" name="contractId" value="@(((Contract)ViewBag.contract).Id)" />
+    <input type="hidden" name="dType" value="брак" />
+
+    <div class="row">
+        
+       
+        <div class="col-md-12">
+            @if (((SelectList)ViewBag.listItems).Count() > 0)
+            {
+                <div class="text-right">
+                    <input formaction="~/Delivery/OpenDeliveryAct" id="btn1" type="submit" value="Открыть" class="btn btn-primary" />
+                </div>
+
+            }
+
+            <div class="text-right">
+                <input formaction="~/Delivery/CreateDeliveryAct" id="btn2" type="submit" value="Новый акт выбраковки" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+
+

@@ -1,0 +1,46 @@
+﻿@using DbManager;
+@model IEnumerable<WebSklad.Models.DeliveryActModel>
+
+<div id="InnerTable">
+
+
+    <h6 style="color:#ff0000">@ViewData["error"]</h6>
+    <h6>Оборудование</h6>
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr style="background:#EEF3F6">
+                <th>#</th>
+                <th>Наименование</th>
+                <th>Неисправность</th>
+                <th class="no-print"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                int n = 1;
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@n</td>
+                        <td>@item.DeviceTypeName [@item.SerialNumber]</td>
+                        <td>@item.Defect</td>
+                        <td class="no-print">
+                            <form action="/Delivery/DeleteDefect" method="post">
+                                <input type="hidden" name="serialNumber" value="@item.SerialNumber" />
+                                <input type="hidden" name="contractId" value="@ViewBag.contract.Id" />
+                                <div class="text-center">
+                                    <input id="Submit1" type="submit" value="Удалить" class="btn btn-danger" />
+                                </div>
+                            </form>
+                        </td>
+
+                    </tr>
+                    n++;
+                }
+            }
+        </tbody>
+
+    </table>
+</div>
+
